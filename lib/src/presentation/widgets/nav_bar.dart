@@ -19,7 +19,7 @@ class Nav extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.article),
-          label: 'Provas',
+          label: 'Testes',
         )
       ]
     );
