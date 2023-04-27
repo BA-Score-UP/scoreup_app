@@ -24,7 +24,6 @@ class HomePage extends StatelessWidget {
               height: sizedBoxHeight,
               child: ElevatedButton(
                 onPressed: () => {},
-                style: const ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.green)),
                 child: const Text(
                   'Meta Semanal',
                   style: TextStyle(fontSize: 20),
