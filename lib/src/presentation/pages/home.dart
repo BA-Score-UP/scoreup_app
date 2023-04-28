@@ -45,7 +45,9 @@ class HomePage extends StatelessWidget {
               width: sizedBoxWidth,
               height: sizedBoxHeight,
               child: ElevatedButton(
-                onPressed: () => {},
+                onPressed: () => {
+                  Navigator.of(context).pushReplacementNamed('/select_questions'),
+                },
                 child: const Text(
                   'Testar Conhecimentos',
                   style: TextStyle(fontSize: 20),
