@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:scoreup_app/src/presentation/pages/home.dart';
+import 'package:scoreup_app/src/presentation/pages/select-questions_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,7 +17,8 @@ class MyApp extends StatelessWidget {
       ),
       initialRoute: '/',
       routes: {
-        '/':(context) => const HomePage(), //Posteriormente a ordem irá ser trocada.
+        '/':(context) => const HomePage(),
+        '/select_questions':(context) => const SelectQuestions(), //Posteriormente a ordem irá ser trocada.
       },
       debugShowCheckedModeBanner: false,
     );
