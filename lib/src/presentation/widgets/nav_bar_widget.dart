@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scoreup_app/src/presentation/pages/home.dart';
-import 'package:scoreup_app/src/presentation/pages/select-questions_page.dart';
+import 'package:scoreup_app/src/presentation/pages/home_page.dart';
+import 'package:scoreup_app/src/presentation/pages/select_questions_page.dart';
 
 class Nav extends StatefulWidget {
   const Nav({

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:scoreup_app/src/presentation/widgets/nav_bar.dart';
-import 'package:scoreup_app/src/presentation/widgets/top_bar.dart';
+import 'package:scoreup_app/src/presentation/widgets/nav_bar_widget.dart';
+import 'package:scoreup_app/src/presentation/widgets/top_bar_widget.dart';
 
 class SelectQuestions extends StatefulWidget {
   const SelectQuestions({super.key});
