@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/widgets/framework.dart';
-import 'package:flutter/src/widgets/placeholder.dart';
-import 'package:scoreup_app/src/presentation/widgets/nav_bar_widget.dart';
-import 'package:scoreup_app/src/presentation/widgets/top_bar_widget.dart';
+import '../widgets/nav_bar_widget.dart';
+import '../widgets/top_bar_widget.dart';
+import '../widgets/dropdown_widget.dart';
 
 class SelectQuestions extends StatefulWidget {
   const SelectQuestions({super.key});
@@ -13,7 +12,13 @@ class SelectQuestions extends StatefulWidget {
 
 class _SelectQuestionsState extends State<SelectQuestions> {
 
-  String? _dropdownvalue;
+  bool isMacroSubjectSelected = false;
+
+  void handleSelection() {
+    setState(() {
+      isMacroSubjectSelected = true;
+    });
+  }
 
   var items = [
     'Matemática',
@@ -34,104 +39,19 @@ class _SelectQuestionsState extends State<SelectQuestions> {
           spacing: 20,
           runSpacing: 30,
           children: [
-            SizedBox(
-              width: 280,
-              child: DropdownButtonFormField(
-                decoration: const InputDecoration(
-                  label: Text('Selecione a matéria'),
-                  border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  )
-                ),            
-                isExpanded: true,
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                icon: const Icon(Icons.keyboard_arrow_down),
-                hint: const Text(
-                  'Matéria', 
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                value: _dropdownvalue,
-                items: items.map((String items){
-                  return DropdownMenuItem(
-                    value: items, 
-                    child: Text(items),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _dropdownvalue = newValue!;
-                  });
-                }
-              ),
+            DropdownWidget(
+              title: "Matéria",
+              content: items,
+              onChange: () => handleSelection(),
             ),
-            SizedBox(
-              width: 280,
-              child: DropdownButtonFormField(
-                decoration: const InputDecoration(
-                  label: Text('Selecione o assunto'),
-                  border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  )
-                ),                  
-                isExpanded: true,
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                icon: const Icon(Icons.keyboard_arrow_down),
-                hint: const Text(
-                  'Assunto', 
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                value: _dropdownvalue,
-                items: items.map((String items){
-                  return DropdownMenuItem(
-                    value: items, 
-                    child: Text(items),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _dropdownvalue = newValue!;
-                  });
-                }
-              ),
+            DropdownWidget(
+              title: "Assunto",
+              content: items,
+              isEnabled: isMacroSubjectSelected,
             ),
-            SizedBox(
-              width: 280,
-              child: DropdownButtonFormField(
-                decoration: const InputDecoration(
-                  label: Text('Selecione a quantidade de questões'),
-                  border: OutlineInputBorder(
-                  borderRadius: BorderRadius.all(Radius.circular(10)),
-                  )
-                ),                  
-                isExpanded: true,
-                borderRadius: const BorderRadius.all(Radius.circular(10)),
-                icon: const Icon(Icons.keyboard_arrow_down),
-                hint: const Text(
-                  'Quantidade de questões', 
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                value: _dropdownvalue,
-                items: items.map((String items){
-                  return DropdownMenuItem(
-                    value: items, 
-                    child: Text(items),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  setState(() {
-                    _dropdownvalue = newValue!;
-                  });
-                }
-              ),
+            DropdownWidget(
+              title: "Quantidade",
+              content: items
             ),
             SizedBox(
               width: 280,
