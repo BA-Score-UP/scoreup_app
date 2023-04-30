@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:scoreup_app/src/presentation/pages/home_page.dart';
-import 'package:scoreup_app/src/presentation/pages/select_questions_page.dart';
 
 class Nav extends StatefulWidget {
   const Nav({
@@ -19,7 +17,7 @@ class _NavState extends State<Nav> {
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.article),
-          label: 'Provas',
+          label: 'Provas'
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.home),

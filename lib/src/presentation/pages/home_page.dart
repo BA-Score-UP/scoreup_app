@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
+import './select_questions_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -11,7 +12,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topBar(),
+      appBar: const TopBar( mainContent: [
+        Icon(Icons.account_circle_rounded, size: 32,),
+        Text("Olá, nome!")
+      ]),
       body: Container(
         padding: const EdgeInsets.all(32),
         alignment: Alignment.center,
@@ -46,7 +50,7 @@ class HomePage extends StatelessWidget {
               height: sizedBoxHeight,
               child: ElevatedButton(
                 onPressed: () => {
-                  Navigator.of(context).pushReplacementNamed('/select_questions'),
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectQuestions()))
                 },
                 child: const Text(
                   'Testar Conhecimentos',
