@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
+import './select_questions_page.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -49,7 +50,7 @@ class HomePage extends StatelessWidget {
               height: sizedBoxHeight,
               child: ElevatedButton(
                 onPressed: () => {
-                  Navigator.of(context).pushReplacementNamed('/select_questions'),
+                   Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectQuestions()))
                 },
                 child: const Text(
                   'Testar Conhecimentos',
