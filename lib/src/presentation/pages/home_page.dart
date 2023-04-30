@@ -11,7 +11,10 @@ class HomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topBar(),
+      appBar: const TopBar( mainContent: [
+        Icon(Icons.account_circle_rounded, size: 32,),
+        Text("Olá, nome!")
+      ]),
       body: Container(
         padding: const EdgeInsets.all(32),
         alignment: Alignment.center,

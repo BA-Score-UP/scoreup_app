@@ -7,10 +7,10 @@ class SelectQuestions extends StatefulWidget {
   const SelectQuestions({super.key});
 
   @override
-  State<SelectQuestions> createState() => _SelectQuestionsState();
+ SelectQuestionsState createState() => SelectQuestionsState();
 }
 
-class _SelectQuestionsState extends State<SelectQuestions> {
+class SelectQuestionsState extends State<SelectQuestions> {
 
   bool isMacroSubjectSelected = false;
 
@@ -31,7 +31,7 @@ class _SelectQuestionsState extends State<SelectQuestions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: topBar(),
+      appBar: const TopBar(),
       body: Center(
         child: Wrap(
           alignment: WrapAlignment.center,

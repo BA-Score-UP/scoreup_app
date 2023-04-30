@@ -7,12 +7,12 @@ class DropdownWidget extends StatefulWidget {
   final bool isEnabled;
 
   const DropdownWidget({
-    Key? key,
+    super.key,
     required this.title,
     required this.content,
     this.onChange,
     this.isEnabled = true,
-  }) : super(key: key);
+  });
 
   @override
   DropdownWidgetState createState() => DropdownWidgetState();
