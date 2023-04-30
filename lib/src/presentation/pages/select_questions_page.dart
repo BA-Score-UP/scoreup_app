@@ -32,12 +32,12 @@ class SelectQuestionsState extends State<SelectQuestions> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: const TopBar(),
-      body: Center(
-        child: Wrap(
-          alignment: WrapAlignment.center,
-          direction: Axis.vertical,
-          spacing: 20,
-          runSpacing: 30,
+      body: Container (
+        padding: const EdgeInsets.all(32),
+        alignment: Alignment.center,
+        child: Column (
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             DropdownWidget(
               title: "Matéria",
@@ -54,7 +54,7 @@ class SelectQuestionsState extends State<SelectQuestions> {
               content: items
             ),
             SizedBox(
-              width: 280,
+              width: double.infinity,
               height: 40,
               child: ElevatedButton(
                 onPressed: () {},
