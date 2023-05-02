@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scoreup_app/src/presentation/pages/home_page.dart';
-import 'package:scoreup_app/src/presentation/pages/select_questions_page.dart';
+import './pages/home_page.dart';
+import './pages/select_questions_page.dart';
 
 void main() {
   runApp(const MyApp());
