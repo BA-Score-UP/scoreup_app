@@ -3,6 +3,7 @@
 ## Main libraries used
 
 1. http - A set of high-level functions and classes that make it easy to consume HTTP resources.
+2. flutter dotenv - A library for loading environment variables from a .env file into the OS environment variables.
 
 ## Folder structure
 
