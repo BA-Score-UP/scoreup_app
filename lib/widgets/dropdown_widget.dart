@@ -25,7 +25,6 @@ class DropdownWidgetState extends State<DropdownWidget> {
   Widget build(BuildContext context) {
     return SizedBox(
       width: double.infinity,
-      height: 80,
       child: DropdownButtonFormField(
         decoration: InputDecoration(
           label: Text(widget.title),

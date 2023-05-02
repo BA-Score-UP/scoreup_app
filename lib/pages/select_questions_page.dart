@@ -35,9 +35,9 @@ class SelectQuestionsState extends State<SelectQuestions> {
       body: Container (
         padding: const EdgeInsets.all(32),
         alignment: Alignment.center,
-        child: Column (
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
+        child: Wrap(
+          alignment: WrapAlignment.center,
+          runSpacing: 16.0,
           children: [
             DropdownWidget(
               title: "Matéria",
