@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
 import './select_questions_page.dart';
+import '../widgets/container_button_widget.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -23,51 +24,23 @@ class HomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(
-              width: double.infinity,
-              height: sizedBoxHeight,
-              child: ElevatedButton(
-                onPressed: () => {},
-                child: const Text(
-                  'Meta Semanal',
-                  style: TextStyle(fontSize: 20),
-                )
-              ),
+            ContainerButton(
+              title: 'Meta Semanal', 
+              onPressed: () {},
             ),
-            SizedBox(
-              width: sizedBoxWidth,
-              height: sizedBoxHeight,
-              child: ElevatedButton(
-                onPressed: () => {},
-                child: const Text(
-                  'Taxa de Acertos',
-                  style: TextStyle(fontSize: 20),
-                )
-              ),
+            ContainerButton(
+              title: 'Taxa de Acertos', 
+              onPressed: () {},
             ),
-            SizedBox(
-              width: sizedBoxWidth,
-              height: sizedBoxHeight,
-              child: ElevatedButton(
-                onPressed: () => {
-                   Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectQuestions()))
-                },
-                child: const Text(
-                  'Testar Conhecimentos',
-                  style: TextStyle(fontSize: 20),
-                )
-              ),
+            ContainerButton(
+              title: 'Testar Conhecimentos', 
+              onPressed: () {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => const SelectQuestions()));
+              },
             ),
-            SizedBox(
-              width: sizedBoxWidth,
-              height: sizedBoxHeight,
-              child: ElevatedButton(
-                onPressed: () => {},
-                child: const Text(
-                  'Revisar Questões',
-                  style: TextStyle(fontSize: 20),
-                )
-              ),
+            ContainerButton(
+              title: 'Revisar Questões', 
+              onPressed: () {},
             ),
           ],
         ),
