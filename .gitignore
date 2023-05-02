@@ -1,7 +1,5 @@
 #should be removed
 test/
-#Environment variables
-.env
 
 #Debug related
 windows/
