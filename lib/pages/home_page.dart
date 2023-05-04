@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:scoreup_app/models/subject_models.dart';
+import 'package:scoreup_app/widgets/loading_widget.dart';
 import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
 import './select_questions_page.dart';
@@ -55,16 +56,16 @@ class HomePgeState extends State<HomePage> {
             ),
             ContainerButton(
               title: 'Testar Conhecimentos',
-              onPressed: () async {
-                final subjects = await fetchGetSubjects();
-                setState(() {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SelectQuestions(macroSubjects: subjects),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => LoadingWidget(
+                      future: fetchGetSubjects(),
+                      builder: (context, subjects) => SelectQuestions(macroSubjects: subjects),
                     ),
-                  );
-                });
+                  ),
+                );
               },
             ),
             ContainerButton(

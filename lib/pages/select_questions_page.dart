@@ -62,7 +62,7 @@ class SelectQuestionsState extends State<SelectQuestions> {
               :[],
               isEnabled: isMacroSubjectSelected,
             ),
-            DropdownWidget(
+            const DropdownWidget(
               title: "Quantidade",
               content: []
             ),
