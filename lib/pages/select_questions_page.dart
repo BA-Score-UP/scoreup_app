@@ -1,32 +1,40 @@
 import 'package:flutter/material.dart';
+import '../utils/remove_null_util.dart';
+import '../models/subject_models.dart';
 import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
 import '../widgets/dropdown_widget.dart';
 
 class SelectQuestions extends StatefulWidget {
-  const SelectQuestions({super.key});
+  final SubjectListModel? macroSubjects; 
+
+  const SelectQuestions({
+    super.key,
+    required this.macroSubjects,
+  });
 
   @override
- SelectQuestionsState createState() => SelectQuestionsState();
+  SelectQuestionsState createState() => SelectQuestionsState();
 }
 
 class SelectQuestionsState extends State<SelectQuestions> {
-
+  String selectedMacroSubject = "";
   bool isMacroSubjectSelected = false;
 
-  void handleSelection() {
+  void handleMacroSubjectSelection(String dropdownValue) {
     setState(() {
       isMacroSubjectSelected = true;
+      selectedMacroSubject = dropdownValue;
     });
   }
 
-  var items = [
-    'Matemática',
-    'Português',
-    'Inglês',
-    'Fisica',
-    'Biologia',
-    ];
+  List<String>? macroSubjects;
+
+  @override
+  void initState() {
+    super.initState();
+    macroSubjects = widget.macroSubjects!.getCastedMacroSubjects();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -41,28 +49,36 @@ class SelectQuestionsState extends State<SelectQuestions> {
           children: [
             DropdownWidget(
               title: "Matéria",
-              content: items,
-              onChange: () => handleSelection(),
+              content: macroSubjects!,
+              onChange: handleMacroSubjectSelection,
             ),
             DropdownWidget(
               title: "Assunto",
-              content: items,
+              content: isMacroSubjectSelected?
+              removeNull(
+                widget.macroSubjects!.getMacroSubjectByName(selectedMacroSubject)!
+                .microSubjects.getCastedMicroSubjects()
+              )
+              :[],
               isEnabled: isMacroSubjectSelected,
             ),
             DropdownWidget(
               title: "Quantidade",
-              content: items
+              content: []
             ),
             SizedBox(
               width: double.infinity,
               height: 40,
               child: ElevatedButton(
                 onPressed: () {},
-                style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(Colors.blue.shade900)), 
+                style: ButtonStyle(
+                  backgroundColor: MaterialStatePropertyAll(Colors.blue.shade900)
+                ), 
                 child: const Text(
                   'Selecionar', 
-                style: TextStyle(
-                  color: Colors.white),
+                  style: TextStyle(
+                    color: Colors.white
+                  ),
                 ),
               ),
             ),

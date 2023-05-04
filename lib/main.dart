@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/':(context) => const HomePage(),
-        '/select_questions':(context) => const SelectQuestions(), //Posteriormente a ordem irá ser trocada.
+        '/select_questions':(context) => const SelectQuestions(macroSubjects: null), //Posteriormente a ordem irá ser trocada.
       },
       debugShowCheckedModeBanner: false,
     );
