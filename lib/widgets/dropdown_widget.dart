@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class DropdownWidget extends StatefulWidget {
   final String title;
   final List<String> content;
-  final Function()? onChange;
+  final Function(String)? onChange;
   final bool isEnabled;
 
   const DropdownWidget({
@@ -19,7 +19,7 @@ class DropdownWidget extends StatefulWidget {
 }
 
 class DropdownWidgetState extends State<DropdownWidget> {
-  String? _dropdownValue;
+  String? dropdownValue;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class DropdownWidgetState extends State<DropdownWidget> {
         isExpanded: true,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         icon: const Icon(Icons.keyboard_arrow_down),
-        value: _dropdownValue,
+        value: dropdownValue,
         items: widget.content.map((String item) {
           return DropdownMenuItem(
             value: item,
@@ -44,9 +44,9 @@ class DropdownWidgetState extends State<DropdownWidget> {
         }).toList(),
         onChanged: widget.isEnabled ? (String? newValue) {
           setState(() {
-            _dropdownValue = newValue!;
+            dropdownValue = newValue!;
           });
-          widget.onChange?.call();
+          widget.onChange?.call(newValue!);
         } : null,
       ),
     );
