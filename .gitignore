@@ -1,6 +1,9 @@
 #should be removed
 test/
 
+#Envronment variables
+.env
+
 #Debug related
 windows/
 android/
