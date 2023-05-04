@@ -46,9 +46,10 @@ class TopBarState extends State<TopBar> {
             if (widget.isMenuShown)
               IconButton(
                 onPressed: () => {},
+                iconSize: 32,
+                splashRadius: 24,
                 icon: Icon(
                   Icons.menu,
-                  size: 32,
                   color: widget.iconColor,
                 ),
               ),

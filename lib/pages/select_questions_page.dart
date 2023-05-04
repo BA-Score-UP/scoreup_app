@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import '../utils/remove_null_util.dart';
 import '../models/subject_models.dart';
-import '../widgets/nav_bar_widget.dart';
-import '../widgets/top_bar_widget.dart';
 import '../widgets/dropdown_widget.dart';
 
 class SelectQuestions extends StatefulWidget {
@@ -39,7 +37,6 @@ class SelectQuestionsState extends State<SelectQuestions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TopBar(),
       body: Container (
         padding: const EdgeInsets.all(32),
         alignment: Alignment.center,
@@ -84,8 +81,7 @@ class SelectQuestionsState extends State<SelectQuestions> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: const Nav(),
+      )
     );
   }
 }
