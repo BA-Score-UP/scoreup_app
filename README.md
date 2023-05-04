@@ -30,7 +30,8 @@ pubspec.yaml
 
 ## Running
 
-⚠️ Don't clone in a folder with spaces ⚠️
+⚠️ Don't clone in a folder with blank spaces ⚠️
+⚠️ Make sure to have an valid API-KEY in the .env file ⚠️
 
 1. Clone the repository: ```git clone https://github.com/BA-Score-UP/scoreup-app.git```
 2. Install flutter dependencies: ```flutter pub get```
