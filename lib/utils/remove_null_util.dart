@@ -1,4 +1,4 @@
 List<String> removeNull(List<String?> nullList) {
-  final nonNullList = nullList.whereType<String>().toList();
-  return nonNullList;
+  List<String> nonNullList = List<String>.from(nullList.where((e) => e != null).toList());
+  return nonNullList.where((e) => e != "null").toList();
 }
