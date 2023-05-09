@@ -19,7 +19,7 @@ class DropdownWidget extends StatefulWidget {
 }
 
 class DropdownWidgetState extends State<DropdownWidget> {
-  String? dropdownValue;
+  int? dropdownValueIndex;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class DropdownWidgetState extends State<DropdownWidget> {
         isExpanded: true,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         icon: const Icon(Icons.keyboard_arrow_down),
-        value: dropdownValue,
+        value: dropdownValueIndex == null? null: widget.content[dropdownValueIndex!],
         items: widget.content.map((String item) {
           return DropdownMenuItem(
             value: item,
@@ -44,7 +44,7 @@ class DropdownWidgetState extends State<DropdownWidget> {
         }).toList(),
         onChanged: widget.isEnabled ? (String? newValue) {
           setState(() {
-            dropdownValue = newValue!;
+            dropdownValueIndex = widget.content.indexOf(newValue!);
           });
           widget.onChange?.call(newValue!);
         } : null,
