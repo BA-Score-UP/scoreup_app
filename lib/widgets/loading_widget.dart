@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import '../widgets/nav_bar_widget.dart';
+import '../widgets/top_bar_widget.dart';
 
 class LoadingWidget extends StatelessWidget {
   final Future<dynamic> future;
@@ -9,6 +11,7 @@ class LoadingWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const TopBar(),
       body: Center(
         child: FutureBuilder(
           future: future,
@@ -28,6 +31,7 @@ class LoadingWidget extends StatelessWidget {
           },
         ),
       ),
+      bottomNavigationBar: const Nav(),
     );
   }
 }

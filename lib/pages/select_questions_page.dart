@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../utils/remove_null_util.dart';
 import '../models/subject_models.dart';
-import '../widgets/nav_bar_widget.dart';
-import '../widgets/top_bar_widget.dart';
 import '../widgets/dropdown_widget.dart';
+import '../services/get_question_ammount_by_subjects.dart';
 
 class SelectQuestions extends StatefulWidget {
   final SubjectListModel? macroSubjects; 
@@ -18,15 +18,52 @@ class SelectQuestions extends StatefulWidget {
 }
 
 class SelectQuestionsState extends State<SelectQuestions> {
-  String selectedMacroSubject = "";
+  String selectedMacroSubject = '';
+  String selectedMicroSubject = '';
+  int? microSubjectIndex;
   bool isMacroSubjectSelected = false;
+  List<String> questionAmmount = [];
+
+  void fetchGetQuestionAmmountBySubjects(String macroSubject, String microSubject) async {
+    final apiKey = dotenv.env['API-KEY'];
+    if (apiKey == null) {
+      throw Exception('API-KEY is null');
+    }
+
+    int quantity = await getQuestionAmmountBySubjects(apiKey, macroSubject, microSubject);
+
+    print(quantity);
+
+    setState(() {
+      questionAmmount = List<int>.generate(quantity, (index) => index + 1).map((e) => '$e').toList();
+    });
+  }
 
   void handleMacroSubjectSelection(String dropdownValue) {
     setState(() {
+      microSubjectIndex = widget.macroSubjects!.getMacroSubjectByName("macroSubject")!.microSubjects.getCastedMicroSubjects().indexOf(dropdownValue);
       isMacroSubjectSelected = true;
       selectedMacroSubject = dropdownValue;
+      fetchGetQuestionAmmountBySubjects(
+        selectedMacroSubject,
+        widget.macroSubjects!.getMacroSubjectByName(dropdownValue)!.microSubjects.getCastedMicroSubjects()[microSubjectIndex!]
+      );
     });
   }
+
+
+  void handleMicroSubjectSelection(String dropdownValue) {
+    setState(() {
+      selectedMicroSubject = dropdownValue;
+
+      fetchGetQuestionAmmountBySubjects(
+        selectedMacroSubject,
+        selectedMicroSubject
+      );
+    });
+  }
+
+  
 
   List<String>? macroSubjects;
 
@@ -39,7 +76,6 @@ class SelectQuestionsState extends State<SelectQuestions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TopBar(),
       body: Container (
         padding: const EdgeInsets.all(32),
         alignment: Alignment.center,
@@ -48,23 +84,24 @@ class SelectQuestionsState extends State<SelectQuestions> {
           runSpacing: 16.0,
           children: [
             DropdownWidget(
-              title: "Matéria",
+              title: 'Matéria',
               content: macroSubjects!,
-              onChange: handleMacroSubjectSelection,
+              onChange: handleMacroSubjectSelection
             ),
             DropdownWidget(
-              title: "Assunto",
+              title: 'Assunto',
               content: isMacroSubjectSelected?
-              removeNull(
-                widget.macroSubjects!.getMacroSubjectByName(selectedMacroSubject)!
-                .microSubjects.getCastedMicroSubjects()
-              )
-              :[],
+                removeNull(
+                  widget.macroSubjects!.getMacroSubjectByName(selectedMacroSubject)!
+                  .microSubjects.getCastedMicroSubjects()
+                )
+                :[],
               isEnabled: isMacroSubjectSelected,
+              onChange: handleMicroSubjectSelection,
             ),
-            const DropdownWidget(
-              title: "Quantidade",
-              content: []
+            DropdownWidget(
+              title: 'Quantidade',
+              content: questionAmmount,
             ),
             SizedBox(
               width: double.infinity,
@@ -84,8 +121,7 @@ class SelectQuestionsState extends State<SelectQuestions> {
             ),
           ],
         ),
-      ),
-      bottomNavigationBar: const Nav(),
+      )
     );
   }
 }
