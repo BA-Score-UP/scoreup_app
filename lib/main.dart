@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:scoreup_app/pages/exam_page.dart';
+import 'package:scoreup_app/pages/question_page.dart';
 import './pages/home_page.dart';
 import './pages/select_questions_page.dart';
 
