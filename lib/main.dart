@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:scoreup_app/pages/exam_page.dart';
 import './pages/home_page.dart';
 import './pages/select_questions_page.dart';
 
@@ -20,7 +21,8 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/':(context) => const HomePage(),
-        '/select_questions':(context) => const SelectQuestions(macroSubjects: null), //Posteriormente a ordem irá ser trocada.
+        '/select_questions':(context) => const SelectQuestions(macroSubjects: null),
+        '/exam':(context) => const ExamPage() //Posteriormente a ordem irá ser trocada.
       },
       debugShowCheckedModeBanner: false,
     );
