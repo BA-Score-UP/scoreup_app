@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:scoreup_app/models/subject_models.dart';
-import 'package:scoreup_app/pages/question_page.dart';
 import 'package:scoreup_app/widgets/loading_widget.dart';
 import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
@@ -49,9 +48,7 @@ class HomePgeState extends State<HomePage> {
           children: [
             ContainerButton(
               title: 'Meta Semanal',
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ExamPage()));
-              },
+              onPressed: () {},
             ),
             ContainerButton(
               title: 'Taxa de Acertos',
