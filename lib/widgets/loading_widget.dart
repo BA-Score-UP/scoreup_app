@@ -5,13 +5,19 @@ import '../widgets/top_bar_widget.dart';
 class LoadingWidget extends StatelessWidget {
   final Future<dynamic> future;
   final Widget Function(BuildContext, dynamic) builder;
+  final bool secondary;
 
-  const LoadingWidget({super.key, required this.future, required this.builder});
+  const LoadingWidget({
+    super.key,
+    required this.future, 
+    required this.builder,
+    this.secondary = true
+  });
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TopBar(),
+      appBar: secondary? const TopBar() : null,
       body: Center(
         child: FutureBuilder(
           future: future,
@@ -31,7 +37,7 @@ class LoadingWidget extends StatelessWidget {
           },
         ),
       ),
-      bottomNavigationBar: const Nav(),
+      bottomNavigationBar: secondary? const Nav() : null,
     );
   }
 }

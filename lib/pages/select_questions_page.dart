@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:scoreup_app/pages/question_page.dart';
 import '../utils/remove_null_util.dart';
 import '../models/subject_models.dart';
+import '../models/question_models.dart';
 import '../widgets/dropdown_widget.dart';
+import '../widgets/loading_widget.dart';
 import '../services/get_question_ammount_by_subjects.dart';
+import '../services/get_filtered_questions.dart';
 
 class SelectQuestions extends StatefulWidget {
   final SubjectListModel? macroSubjects; 
@@ -18,11 +22,36 @@ class SelectQuestions extends StatefulWidget {
 }
 
 class SelectQuestionsState extends State<SelectQuestions> {
+  QuestionListModel? questions;
+
   String selectedMacroSubject = '';
   String selectedMicroSubject = '';
   int? microSubjectIndex;
   bool isMacroSubjectSelected = false;
   List<String> questionAmmount = [];
+
+  Future<void> fetchQuestions() async {
+    final apiKey = dotenv.env['API-KEY'];
+    if (apiKey == null) {
+      throw Exception('API-KEY is null');
+    }
+    String macroSubject = "Português";
+    String microSubject = "Literatura";
+    int quantity = 1;
+
+    try {
+      QuestionListModel? questionList = await getQuestions(apiKey, macroSubject, microSubject, quantity);
+      if (questionList != null) {
+        setState(() {
+          questions = questionList;
+        });
+      } else {
+        print('No questions found.');
+      }
+    } catch (e) {
+      print('Error: $e');
+    }
+  }
 
   void fetchGetQuestionAmmountBySubjects(String macroSubject, String microSubject) async {
     final apiKey = dotenv.env['API-KEY'];
@@ -107,7 +136,18 @@ class SelectQuestionsState extends State<SelectQuestions> {
               width: double.infinity,
               height: 40,
               child: ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => LoadingWidget(
+                        future: fetchQuestions(),
+                        builder: (context, subjects,) => ExamPage(questionList: questions!),
+                        secondary: false,
+                      ),
+                    ),
+                  );
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStatePropertyAll(Colors.blue.shade900)
                 ), 
