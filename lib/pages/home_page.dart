@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:scoreup_app/models/subject_models.dart';
 import 'package:scoreup_app/pages/exam_page.dart';
+import 'package:scoreup_app/pages/sign_in_page.dart';
 import 'package:scoreup_app/widgets/loading_widget.dart';
 import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
@@ -55,7 +56,12 @@ class HomePgeState extends State<HomePage> {
             ),
             ContainerButton(
               title: 'Taxa de Acertos',
-              onPressed: () {},
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => const SignInPage()),
+                );
+              },
             ),
             ContainerButton(
               title: 'Testar Conhecimentos',

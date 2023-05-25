@@ -26,10 +26,10 @@ class _ExamPageState extends State<ExamPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: [
+                children: const [
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: const [
+                    children: [
                       Text('Vestibular: ENEM',),
                       Text('Ano: 2022'),
                     ],
@@ -37,7 +37,7 @@ class _ExamPageState extends State<ExamPage> {
                   Expanded (
                     child: SingleChildScrollView (
                       child: Column(
-                          children: const [
+                          children: [
                             Text(
                               "Urgência emocional",
                               style: TextStyle(fontWeight: FontWeight.w700)
