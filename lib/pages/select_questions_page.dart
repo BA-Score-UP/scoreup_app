@@ -1,111 +1,69 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:scoreup_app/pages/question_page.dart';
-import '../utils/remove_null_util.dart';
-import '../models/subject_models.dart';
-import '../models/question_models.dart';
-import '../widgets/dropdown_widget.dart';
-import '../widgets/loading_widget.dart';
-import '../services/get_question_ammount_by_subjects.dart';
+import 'package:scoreup_app/models/question_models.dart';
+import 'package:scoreup_app/services/get_question_ammount_by_subjects.dart';
 import '../services/get_filtered_questions.dart';
+import '../models/subject_models.dart';
+import '../widgets/dropdown_widget.dart';
 
 class SelectQuestions extends StatefulWidget {
-  final SubjectListModel? macroSubjects; 
+  final SubjectListModel? macroSubjects;
 
   const SelectQuestions({
-    super.key,
+    Key? key,
     required this.macroSubjects,
-  });
+  }) : super(key: key);
 
   @override
   SelectQuestionsState createState() => SelectQuestionsState();
 }
 
 class SelectQuestionsState extends State<SelectQuestions> {
-  QuestionListModel? questions;
-
-  String selectedMacroSubject = '';
-  String selectedMicroSubject = '';
-  int? microSubjectIndex;
+  String? selectedMacroSubject;
   bool isMacroSubjectSelected = false;
-  List<String> questionAmmount = [];
+  String? selectedMicroSubject;
+  int? selectedQuestionAmount;
+  String? selectedQuestionAmountValue;
 
-  Future<void> fetchQuestions() async {
+  Future<QuestionListModel?> fetchQuestions(String macroSubject, String microSubject, int quantity) async {
     final apiKey = dotenv.env['API-KEY'];
     if (apiKey == null) {
       throw Exception('API-KEY is null');
     }
-    String macroSubject = "Português";
-    String microSubject = "Literatura";
-    int quantity = 1;
+    QuestionListModel? questions = await getQuestions(apiKey, macroSubject, microSubject, quantity);
 
-    try {
-      QuestionListModel? questionList = await getQuestions(apiKey, macroSubject, microSubject, quantity);
-      if (questionList != null) {
-        setState(() {
-          questions = questionList;
-        });
-      } else {
-        print('No questions found.');
-      }
-    } catch (e) {
-      print('Error: $e');
-    }
-  }
-
-  void fetchGetQuestionAmmountBySubjects(String macroSubject, String microSubject) async {
-    final apiKey = dotenv.env['API-KEY'];
-    if (apiKey == null) {
-      throw Exception('API-KEY is null');
-    }
-
-    int quantity = await getQuestionAmmountBySubjects(apiKey, macroSubject, microSubject);
-
-    print(quantity);
-
-    setState(() {
-      questionAmmount = List<int>.generate(quantity, (index) => index + 1).map((e) => '$e').toList();
-    });
+    return questions;
   }
 
   void handleMacroSubjectSelection(String dropdownValue) {
     setState(() {
-      microSubjectIndex = widget.macroSubjects!.getMacroSubjectByName("macroSubject")!.microSubjects.getCastedMicroSubjects().indexOf(dropdownValue);
       isMacroSubjectSelected = true;
       selectedMacroSubject = dropdownValue;
-      fetchGetQuestionAmmountBySubjects(
-        selectedMacroSubject,
-        widget.macroSubjects!.getMacroSubjectByName(dropdownValue)!.microSubjects.getCastedMicroSubjects()[microSubjectIndex!]
-      );
+      selectedMicroSubject = null;
+      selectedQuestionAmount = null;
+      selectedQuestionAmountValue = null;
     });
   }
 
+  Future<int> fetchQuestionAmount(String macroSubject, String microSubject) async {
+    final apiKey = dotenv.env['API-KEY'];
+    if (apiKey == null) {
+      throw Exception('API-KEY is null');
+    }
 
-  void handleMicroSubjectSelection(String dropdownValue) {
-    setState(() {
-      selectedMicroSubject = dropdownValue;
+    int questionAmount = await getQuestionAmmountBySubjects(
+      apiKey,
+      macroSubject,
+      microSubject,
+    );
 
-      fetchGetQuestionAmmountBySubjects(
-        selectedMacroSubject,
-        selectedMicroSubject
-      );
-    });
-  }
-
-  
-
-  List<String>? macroSubjects;
-
-  @override
-  void initState() {
-    super.initState();
-    macroSubjects = widget.macroSubjects!.getCastedMacroSubjects();
+    return questionAmount;
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container (
+      body: Container(
         padding: const EdgeInsets.all(32),
         alignment: Alignment.center,
         child: Wrap(
@@ -113,55 +71,88 @@ class SelectQuestionsState extends State<SelectQuestions> {
           runSpacing: 16.0,
           children: [
             DropdownWidget(
-              title: 'Matéria',
-              content: macroSubjects!,
-              onChange: handleMacroSubjectSelection
+              title: "Matéria",
+              content: widget.macroSubjects!.getCastedMacroSubjects(),
+              value: selectedMacroSubject,
+              onChange: handleMacroSubjectSelection,
             ),
             DropdownWidget(
-              title: 'Assunto',
-              content: isMacroSubjectSelected?
-                removeNull(
-                  widget.macroSubjects!.getMacroSubjectByName(selectedMacroSubject)!
-                  .microSubjects.getCastedMicroSubjects()
-                )
-                :[],
+              title: "Assunto",
+              content: selectedMacroSubject != null
+                  ? widget.macroSubjects!
+                      .getMacroSubjectByName(selectedMacroSubject!)
+                      ?.microSubjects
+                      .getCastedMicroSubjects() ?? []
+                  : [],
               isEnabled: isMacroSubjectSelected,
-              onChange: handleMicroSubjectSelection,
+              value: selectedMicroSubject,
+              onChange: (String value) {
+                setState(() {
+                  selectedMicroSubject = value;
+                  selectedQuestionAmount = null;
+                  selectedQuestionAmountValue = null;
+                });
+              },
             ),
-            DropdownWidget(
-              title: 'Quantidade',
-              content: questionAmmount,
+            Visibility(
+              visible: selectedMicroSubject != null,
+              maintainState: true,
+              child: FutureBuilder<int>(
+                future: selectedMicroSubject != null
+                    ? fetchQuestionAmount(selectedMacroSubject!, selectedMicroSubject!)
+                    : Future.value(0),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return CircularProgressIndicator(
+                      color: Colors.blue.shade900,
+                    );
+                  } else if (snapshot.hasError) {
+                    return Text('Ocorreu um erro: ${snapshot.error}');
+                  } else {
+                    final int? questionAmount = snapshot.data;
+                    return Column(
+                      children: [
+                        DropdownWidget(
+                          title: "Quantidade",
+                          content: List.generate(questionAmount!, (index) => (index + 1).toString()),
+                          value: selectedQuestionAmount?.toString(),
+                          onChange: (String value) {
+                            setState(() {
+                              selectedQuestionAmount = int.parse(value);
+                              selectedQuestionAmountValue = value; // Armazena o valor selecionado
+                            });
+                          },
+                        ),
+                      ],
+                    );
+                  }
+                },
+              ),
             ),
             SizedBox(
               width: double.infinity,
               height: 40,
               child: ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => LoadingWidget(
-                        future: fetchQuestions(),
-                        builder: (context, subjects,) => ExamPage(questionList: questions!),
-                        secondary: false,
-                      ),
-                    ),
+                  var questions = fetchQuestions(
+                    selectedMacroSubject!,
+                    selectedMicroSubject!,
+                    selectedQuestionAmount!,
                   );
+                  print(questions);
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStatePropertyAll(Colors.blue.shade900)
-                ), 
+                  backgroundColor: MaterialStateProperty.all(Colors.blue.shade900),
+                ),
                 child: const Text(
-                  'Selecionar', 
-                  style: TextStyle(
-                    color: Colors.white
-                  ),
+                  'Selecionar',
+                  style: TextStyle(color: Colors.white),
                 ),
               ),
             ),
           ],
         ),
-      )
+      ),
     );
   }
 }
