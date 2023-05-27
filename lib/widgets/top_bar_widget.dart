@@ -7,6 +7,7 @@ class TopBar extends StatefulWidget implements PreferredSizeWidget {
   final double padding;
   final double gap;
   final bool isMenuShown;
+  final bool isPopAble;
 
   const TopBar({
     super.key,
@@ -16,6 +17,7 @@ class TopBar extends StatefulWidget implements PreferredSizeWidget {
     this.padding = 8.0,
     this.gap = 16.0,
     this.isMenuShown = true,
+    this.isPopAble = true
   });
 
   @override
@@ -30,32 +32,26 @@ class TopBarState extends State<TopBar> {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: widget.backgroundColor,
-      title: Padding(
-        padding: EdgeInsets.all(widget.padding),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            Wrap(
-              spacing: 8,
-              direction: Axis.horizontal,
-              alignment: WrapAlignment.center,
-              crossAxisAlignment: WrapCrossAlignment.center,
-              children: widget.mainContent,
+      title: Wrap(
+        spacing: 8,
+        direction: Axis.horizontal,
+        alignment: WrapAlignment.center,
+        crossAxisAlignment: WrapCrossAlignment.center,
+        children: widget.mainContent,
+      ),
+      actions: [
+        if (widget.isMenuShown)
+          IconButton(
+            onPressed: () => Scaffold.of(context).openEndDrawer(),
+            iconSize: 32,
+            splashRadius: 24,
+            icon: Icon(
+              Icons.menu,
+              color: widget.iconColor,
             ),
-            if (widget.isMenuShown)
-              IconButton(
-                onPressed: () => {},
-                iconSize: 32,
-                splashRadius: 24,
-                icon: Icon(
-                  Icons.menu,
-                  color: widget.iconColor,
-                ),
-              ),
-          ],
-        ),
-      )
+          ),
+      ],
+      automaticallyImplyLeading: widget.isPopAble,
     );
   }
 }
