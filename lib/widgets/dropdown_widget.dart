@@ -5,6 +5,7 @@ class DropdownWidget extends StatefulWidget {
   final List<String> content;
   final Function(String)? onChange;
   final bool isEnabled;
+  final String? value;
 
   const DropdownWidget({
     super.key,
@@ -12,6 +13,7 @@ class DropdownWidget extends StatefulWidget {
     required this.content,
     this.onChange,
     this.isEnabled = true,
+    required this.value
   });
 
   @override
@@ -35,20 +37,27 @@ class DropdownWidgetState extends State<DropdownWidget> {
         isExpanded: true,
         borderRadius: const BorderRadius.all(Radius.circular(10)),
         icon: const Icon(Icons.keyboard_arrow_down),
-        value: dropdownValueIndex == null? null: widget.content[dropdownValueIndex!],
+        value: dropdownValueIndex == null ? null : widget.content[dropdownValueIndex!],
+        hint: Text(
+          widget.value ?? 'Selecione',
+          style: TextStyle(color: Colors.black),
+        ),
         items: widget.content.map((String item) {
           return DropdownMenuItem(
             value: item,
             child: Text(item),
           );
         }).toList(),
-        onChanged: widget.isEnabled ? (String? newValue) {
-          setState(() {
-            dropdownValueIndex = widget.content.indexOf(newValue!);
-          });
-          widget.onChange?.call(newValue!);
-        } : null,
+        onChanged: widget.isEnabled
+            ? (String? newValue) {
+                setState(() {
+                  dropdownValueIndex = widget.content.indexOf(newValue!);
+                });
+                widget.onChange?.call(newValue!);
+              }
+            : null,
       ),
     );
   }
 }
+

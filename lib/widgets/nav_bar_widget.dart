@@ -13,6 +13,7 @@ class _NavState extends State<Nav> {
   @override
   Widget build(BuildContext context) {
     return BottomNavigationBar(
+      currentIndex: 1,
       selectedItemColor: Colors.black,
       items: const [
         BottomNavigationBarItem(
