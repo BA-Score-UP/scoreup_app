@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import './home_page.dart';
+import '../pages/home_page.dart';
 import '../api/google_signin_api.dart';
 
 class LoginPage extends StatefulWidget {

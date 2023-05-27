@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:scoreup_app/models/subject_models.dart';
-import 'package:scoreup_app/pages/login_page.dart';
-import 'package:scoreup_app/widgets/loading_widget.dart';
+import '../pages/select_questions_page.dart';
+import '../widgets/loading_widget.dart';
 import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
 import '../widgets/drawer_widget.dart';
-import './select_questions_page.dart';
 import '../widgets/container_button_widget.dart';
+import '../models/subject_models.dart';
 import '../services/get_subjects.dart';
 
 class HomePage extends StatefulWidget {
@@ -28,13 +27,11 @@ class HomePgeState extends State<HomePage> {
   static double sizedBoxHeight = 120;
 
    Future<SubjectListModel> fetchGetSubjects() async {
-
     final apiKey = dotenv.env['API-KEY'];
     if (apiKey == null) {
       throw Exception('API-KEY is null');
     }
     SubjectListModel subjects = await getSubjects(apiKey);
-
     return subjects;
   }
 
@@ -68,9 +65,7 @@ class HomePgeState extends State<HomePage> {
           children: [
             ContainerButton(
               title: 'Meta Semanal',
-              onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginPage()));
-              },
+              onPressed: () {},
             ),
             ContainerButton(
               title: 'Taxa de Acertos',

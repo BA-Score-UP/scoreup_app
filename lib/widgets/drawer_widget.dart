@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:scoreup_app/api/google_signin_api.dart';
-import 'package:scoreup_app/pages/login_page.dart';
+import '../api/google_signin_api.dart';
+import '../pages/login_page.dart';
 
 class DrawerWidget extends StatefulWidget {
   const DrawerWidget({ Key? key }) : super(key: key);
