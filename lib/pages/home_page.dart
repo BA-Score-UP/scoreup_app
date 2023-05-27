@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:scoreup_app/models/subject_models.dart';
-import 'package:scoreup_app/pages/exam_page.dart';
+import 'package:scoreup_app/pages/login_page.dart';
 import 'package:scoreup_app/widgets/loading_widget.dart';
 import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
@@ -10,7 +11,12 @@ import '../widgets/container_button_widget.dart';
 import '../services/get_subjects.dart';
 
 class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+  final GoogleSignInAccount? account; 
+
+  const HomePage({
+    super.key,
+    required this.account
+  });
 
   @override
   HomePgeState createState() => HomePgeState();
@@ -34,10 +40,19 @@ class HomePgeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const TopBar(
+      appBar: TopBar(
         mainContent: [
-          Icon(Icons.account_circle_rounded, size: 32,),
-          Text("Olá, nome!")
+          if(widget.account == null)
+            const Icon(Icons.account_circle_rounded, size: 32),
+          if(widget.account == null)
+            const Text("Olá, nome!"),
+
+          if(widget.account != null)
+            CircleAvatar(
+              backgroundImage: NetworkImage(widget.account!.photoUrl!),
+            ),
+          if(widget.account != null)
+            Text("Olá, ${widget.account?.displayName}!")
         ],
       ),
       body: Container(
@@ -50,7 +65,7 @@ class HomePgeState extends State<HomePage> {
             ContainerButton(
               title: 'Meta Semanal',
               onPressed: () {
-                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const ExamPage()));
+                Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LoginPage()));
               },
             ),
             ContainerButton(
