@@ -5,6 +5,7 @@ import 'package:scoreup_app/services/get_question_ammount_by_subjects.dart';
 import '../services/get_filtered_questions.dart';
 import '../models/subject_models.dart';
 import '../widgets/dropdown_widget.dart';
+import '../pages/question_page.dart';
 
 class SelectQuestions extends StatefulWidget {
   final SubjectListModel? macroSubjects;
@@ -133,13 +134,15 @@ class SelectQuestionsState extends State<SelectQuestions> {
               width: double.infinity,
               height: 40,
               child: ElevatedButton(
-                onPressed: () {
-                  var questions = fetchQuestions(
+                onPressed: ()  async {
+                  var questions = await fetchQuestions(
                     selectedMacroSubject!,
                     selectedMicroSubject!,
                     selectedQuestionAmount!,
                   );
-                  print(questions);
+                  Navigator.of(context).pushReplacement(MaterialPageRoute(
+                    builder: (context) => ExamPage(questionList: questions!,)
+                  ));
                 },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all(Colors.blue.shade900),
