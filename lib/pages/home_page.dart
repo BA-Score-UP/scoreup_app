@@ -6,6 +6,7 @@ import 'package:scoreup_app/pages/login_page.dart';
 import 'package:scoreup_app/widgets/loading_widget.dart';
 import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
+import '../widgets/drawer_widget.dart';
 import './select_questions_page.dart';
 import '../widgets/container_button_widget.dart';
 import '../services/get_subjects.dart';
@@ -40,6 +41,7 @@ class HomePgeState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      endDrawer: const DrawerWidget(),
       appBar: TopBar(
         mainContent: [
           if(widget.account == null)
@@ -50,10 +52,12 @@ class HomePgeState extends State<HomePage> {
           if(widget.account != null)
             CircleAvatar(
               backgroundImage: NetworkImage(widget.account!.photoUrl!),
+              radius: 16,
             ),
           if(widget.account != null)
             Text("Olá, ${widget.account?.displayName}!")
         ],
+        isPopAble: false,
       ),
       body: Container(
         padding: const EdgeInsets.all(32),
