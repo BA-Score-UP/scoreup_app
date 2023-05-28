@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:scoreup_app/services/get_answer.dart';
+import '../pages/exam_page.dart';
 import '../pages/select_questions_page.dart';
 import '../widgets/loading_widget.dart';
 import '../widgets/nav_bar_widget.dart';
@@ -8,6 +10,8 @@ import '../widgets/top_bar_widget.dart';
 import '../widgets/drawer_widget.dart';
 import '../widgets/container_button_widget.dart';
 import '../models/subject_models.dart';
+import '../models/question_models.dart';
+import '../services/get_questions_by_id.dart';
 import '../services/get_subjects.dart';
 
 class HomePage extends StatefulWidget {
@@ -25,14 +29,44 @@ class HomePage extends StatefulWidget {
 class HomePgeState extends State<HomePage> {
   static double sizedBoxWidth = double.infinity;
   static double sizedBoxHeight = 120;
+  late double accuracy;
+  late int realized;
 
-   Future<SubjectListModel> fetchGetSubjects() async {
+  Future<SubjectListModel> fetchGetSubjects() async {
     final apiKey = dotenv.env['API-KEY'];
     if (apiKey == null) {
       throw Exception('API-KEY is null');
     }
-    SubjectListModel subjects = await getSubjects(apiKey);
-    return subjects;
+
+    return await getSubjects(
+      apiKey
+    );
+  }
+
+  Future<QuestionListModel?>? fetchGetWronQuestions() async {
+    final apiKey = dotenv.env['API-KEY'];
+    if (apiKey == null) {
+      throw Exception('API-KEY is null');
+    }
+    List<String> wrongsList = await getAnswer(
+      apiKey,
+      widget.account!.id,
+      "wrong"
+    );
+    if (wrongsList.isNotEmpty){
+      return await getQuestionsByIds(
+        apiKey,
+        wrongsList 
+      );
+    } else{
+      return null;
+    }
+  }
+
+  void handleRevision(QuestionListModel? questions) {
+    Navigator.of(context).pushReplacement(MaterialPageRoute(
+      builder: (context) => ExamPage(questionList: questions!, user: widget.account!,)
+    ));
   }
 
   @override
@@ -64,11 +98,11 @@ class HomePgeState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             ContainerButton(
-              title: 'Meta Semanal',
+              title: 'Realizadas: 20',
               onPressed: () {},
             ),
             ContainerButton(
-              title: 'Taxa de Acertos',
+              title: 'Taxa de Acerto: 25%',
               onPressed: () {},
             ),
             ContainerButton(
@@ -79,7 +113,7 @@ class HomePgeState extends State<HomePage> {
                   MaterialPageRoute(
                     builder: (context) => LoadingWidget(
                       future: fetchGetSubjects(),
-                      builder: (context, subjects) => SelectQuestions(macroSubjects: subjects),
+                      builder: (context, subjects) => SelectQuestions(macroSubjects: subjects, user: widget.account,),
                     ),
                   ),
                 );
@@ -87,7 +121,12 @@ class HomePgeState extends State<HomePage> {
             ),
             ContainerButton(
               title: 'Revisar Questões',
-              onPressed: () {},
+              onPressed: () async {
+                QuestionListModel? questions = await fetchGetWronQuestions();
+                if (questions != null) {
+                  handleRevision(questions);
+                }
+              },
             ),
           ],
         ),
