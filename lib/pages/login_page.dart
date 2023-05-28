@@ -31,9 +31,6 @@ class LoginState extends State<LoginPage> {
       user!.id
     );
 
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    userProvider.setUser(user!);
-
     handleLogin(user);
   }
 
@@ -42,7 +39,7 @@ class LoginState extends State<LoginPage> {
     userProvider.setUser(user!);
     
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => HomePage())
+      MaterialPageRoute(builder: (context) => const HomePage())
     );
   }
 

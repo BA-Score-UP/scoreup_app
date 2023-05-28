@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
-import 'package:scoreup_app/services/get_answer.dart';
-import 'package:scoreup_app/services/get_answer_amount.dart';
 import '../pages/exam_page.dart';
 import '../pages/select_questions_page.dart';
 import '../widgets/nav_bar_widget.dart';
@@ -12,6 +11,8 @@ import '../models/subject_models.dart';
 import '../models/question_models.dart';
 import '../services/get_questions_by_id.dart';
 import '../services/get_subjects.dart';
+import '../services/get_answer.dart';
+import '../services/get_answer_amount.dart';
 import 'package:provider/provider.dart';
 import '../user_provider.dart';
 
@@ -23,6 +24,7 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
+  late GoogleSignInAccount user;
   static double sizedBoxWidth = double.infinity;
   static double sizedBoxHeight = 120;
   late double accuracy;
@@ -32,6 +34,7 @@ class HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    user = Provider.of<UserProvider>(context, listen: false).user;
     fetchStats();
   }
 
@@ -41,9 +44,6 @@ class HomePageState extends State<HomePage> {
       throw Exception('API-KEY is null');
     }
     int correctAnswers;
-
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final user = userProvider.user;
 
     realized = await getAnswerAmount(
       apiKey,
@@ -77,8 +77,8 @@ class HomePageState extends State<HomePage> {
     if (apiKey == null) {
       throw Exception('API-KEY is null');
     }
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-    final userId = userProvider.user.id;
+
+    final userId = user.id;
     List<String> wrongsList = await getAnswer(apiKey, userId, "wrong");
     if (wrongsList.isNotEmpty) {
       return await getQuestionsByIds(apiKey, wrongsList);
@@ -89,7 +89,7 @@ class HomePageState extends State<HomePage> {
 
   void handleRevision(QuestionListModel? questions) {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => ExamPage(questionList: questions!, user: Provider.of<UserProvider>(context).user),
+      builder: (context) => ExamPage(questionList: questions!, user: user),
     ));
   }
 
@@ -100,10 +100,10 @@ class HomePageState extends State<HomePage> {
       appBar: TopBar(
         mainContent: [
           CircleAvatar(
-            backgroundImage: NetworkImage(Provider.of<UserProvider>(context).user.photoUrl!),
+            backgroundImage: NetworkImage(user.photoUrl!),
             radius: 16,
           ),
-          Text("Olá, ${Provider.of<UserProvider>(context).user.displayName}!")
+          Text("Olá, ${user.displayName}!")
         ],
         isPopAble: false,
       ),
@@ -151,7 +151,7 @@ class HomePageState extends State<HomePage> {
                                   MaterialPageRoute(
                                     builder: (context) => SelectQuestions(
                                       macroSubjects: subjects,
-                                      user: null,
+                                      user: user,
                                     ),
                                   ),
                                 );
