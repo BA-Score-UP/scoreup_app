@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import './home_page.dart';
+import '../services/set_answer.dart';
 import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
 import '../models/question_models.dart';
 
 class ExamPage extends StatefulWidget {
   final QuestionListModel questionList;
+  final GoogleSignInAccount user;
 
   const ExamPage({
     super.key,
-    required this.questionList
+    required this.questionList,
+    required this.user
   });
 
   @override
@@ -17,6 +23,7 @@ class ExamPage extends StatefulWidget {
 
 class _ExamPageState extends State<ExamPage> {
   late List<QuestionModel> questions;
+  int currentQuestionIndex = 0;
 
   @override
   void initState() {
@@ -24,11 +31,57 @@ class _ExamPageState extends State<ExamPage> {
     questions = widget.questionList.questions;
   }
 
+  void nextQuestion() {
+    setState(() {
+      currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
+    });
+  }
+
+  void previousQuestion() {
+    setState(() {
+      currentQuestionIndex = (currentQuestionIndex - 1) % questions.length;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
+    final currentQuestion = questions[currentQuestionIndex];
+
+    void handleAnswer(int selection) {
+      final apiKey = dotenv.env['API-KEY'];
+      final String status;
+
+      if (apiKey == null) {
+        throw Exception('API-KEY is null');
+      }
+
+      if(selection == currentQuestion.answer) {
+        status = "correct";
+      } else {
+        status = "wrong";
+      }
+      
+      setAnswer(
+        apiKey,
+        widget.user.id,
+        currentQuestion.id,
+        status
+      );
+      
+      questions.removeWhere((question) => question.id == currentQuestion.id);
+
+      if (questions.isEmpty) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (context) => HomePage(account: widget.user))
+        );
+      }
+
+      nextQuestion();
+    }
+
     return Scaffold(
       appBar: const TopBar(),
-      body: Container(
+      body: Padding (
         padding: const EdgeInsets.all(32),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -39,19 +92,19 @@ class _ExamPageState extends State<ExamPage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
-                  Row(
+                  Row (
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       const Text('Vestibular: ENEM'),
-                      Text('Ano: ${questions[0].year}'),
+                      Text('Ano: ${currentQuestion.year}'),
                     ],
                   ),
                   Expanded(
-                    child: SingleChildScrollView(
+                    child: SingleChildScrollView (
                       child: Column(
                         children: [
                           Text(
-                            questions[0].statement.text,
+                            currentQuestion.statement.text,
                             style: const TextStyle(fontWeight: FontWeight.w400),
                           ),
                         ],
@@ -61,89 +114,87 @@ class _ExamPageState extends State<ExamPage> {
                 ],
               ),
             ),
-            Expanded(
+            Expanded (
               child: SingleChildScrollView(
-                child: Wrap(
-                  spacing: 8,
+                child: Column (
                   children: [
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        constraints: const BoxConstraints(
-                          minHeight: 60,
-                        ),
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: Text("A) ${questions[0].options[0].toString()}"),
-                        ),
-                      ),
+                    ExamButton(
+                      action: () => handleAnswer(0),
+                      child: Text("A) ${currentQuestion.options[0].toString()}"),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        constraints: const BoxConstraints(
-                          minHeight: 60,
-                        ),
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: Text("B) ${questions[0].options[1].toString()}"),
-                        ),
-                      ),
+                    const SizedBox(height: 8),
+                    ExamButton(
+                      action: () => handleAnswer(1),
+                      child: Text("B) ${currentQuestion.options[1].toString()}"),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        constraints: const BoxConstraints(
-                          minHeight: 60,
-                        ),
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: Text("C) ${questions[0].options[2].toString()}"),
-                        ),
-                      ),
+                    const SizedBox(height: 8),
+                    ExamButton(
+                      action: () => handleAnswer(2),
+                      child: Text("C) ${currentQuestion.options[2].toString()}"),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        constraints: const BoxConstraints(
-                          minHeight: 60,
-                        ),
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: Text("D) ${questions[0].options[3].toString()}"),
-                        ),
-                      ),
+                    const SizedBox(height: 8),
+                    ExamButton(
+                      action: () => handleAnswer(3),
+                      child: Text("D) ${currentQuestion.options[3].toString()}"),
                     ),
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Container(
-                        padding: const EdgeInsets.all(8),
-                        constraints: const BoxConstraints(
-                          minHeight: 60,
-                        ),
-                        width: double.infinity,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          child: Text("E) ${questions[0].options[4].toString()}"),
-                        ),
-                      ),
+                    const SizedBox(height: 8),
+                    ExamButton(
+                      action: () => handleAnswer(4),
+                      child: Text("E) ${currentQuestion.options[4].toString()}",),
                     ),
                   ],
                 ),
               ),
+            ),
+            Row (
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                ExamButton(
+                  action: previousQuestion,
+                  flex: false,
+                  child: const Text('Previous'),
+                ),
+                ExamButton(
+                  action: nextQuestion,
+                  flex: false,
+                  child: const Text('Next'),
+                ),
+              ]
             )
           ],
         ),
       ),
       bottomNavigationBar: const Nav(),
+    );
+  }
+}
+
+class ExamButton extends StatelessWidget {
+  final Color background;
+  final Function()? action;
+  final Widget child;
+  final bool flex;
+
+  const ExamButton({
+    Key? key,
+    this.background = Colors.grey,
+    required this.action,
+    required this.child,
+    this.flex = true
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(  
+      width: flex? double.infinity : 140,
+      height: 40,
+      child: ElevatedButton(
+        onPressed: action,
+        child: Align (
+          alignment: flex? Alignment.centerLeft : Alignment.center,
+          child: child
+        ),
+      ),
     );
   }
 }
