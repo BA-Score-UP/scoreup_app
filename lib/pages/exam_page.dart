@@ -5,6 +5,7 @@ import './home_page.dart';
 import '../services/set_answer.dart';
 import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
+import '../widgets/bottom_modal_widget.dart';
 import '../models/question_models.dart';
 
 class ExamPage extends StatefulWidget {
@@ -47,6 +48,55 @@ class _ExamPageState extends State<ExamPage> {
   Widget build(BuildContext context) {
     final currentQuestion = questions[currentQuestionIndex];
 
+  Future openModal(String status) async {
+    await showModalBottomSheet<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return BottomModal(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(32),
+                child: Column(
+                  children: [
+                    Text("Você $status", style: const TextStyle(fontWeight: FontWeight.w700)),
+                    Text(currentQuestion.explanation),
+                    status != "Acertou!" ? Text(
+                      "Resposta: ${
+                        currentQuestion.answer == 0 ? "A":
+                        currentQuestion.answer == 1 ? "B":
+                        currentQuestion.answer == 2 ? "C":
+                        currentQuestion.answer == 3 ? "D":
+                        currentQuestion.answer == 4 ? "E":
+                        ""
+                      }"
+                    ):const Text(""),
+                    ElevatedButton(
+                      child: const Text('OK'),
+                      onPressed: () {
+                        Navigator.pop(context);
+
+                        if (questions.isEmpty) {
+                          Navigator.of(context).pushReplacement(
+                            MaterialPageRoute(builder: (context) => const HomePage())
+                          );
+                        }
+
+                        nextQuestion();
+                      },
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
     void handleAnswer(int selection) {
       final apiKey = dotenv.env['API-KEY'];
       final String status;
@@ -61,6 +111,7 @@ class _ExamPageState extends State<ExamPage> {
         status = "wrong";
       }
       
+
       setAnswer(
         apiKey,
         widget.user.id,
@@ -70,13 +121,8 @@ class _ExamPageState extends State<ExamPage> {
       
       questions.removeWhere((question) => question.id == currentQuestion.id);
 
-      if (questions.isEmpty) {
-        Navigator.of(context).pushReplacement(
-          MaterialPageRoute(builder: (context) => HomePage(account: widget.user))
-        );
-      }
-
-      nextQuestion();
+      openModal(status == "correct"? "Acertou!" : "Errou");
+     
     }
 
     return Scaffold(

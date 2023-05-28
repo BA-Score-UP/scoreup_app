@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:provider/provider.dart';
+import '../user_provider.dart';
 import '../pages/home_page.dart';
 import '../services/set_user.dart';
 import '../api/google_signin_api.dart';
@@ -29,12 +31,18 @@ class LoginState extends State<LoginPage> {
       user!.id
     );
 
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.setUser(user!);
+
     handleLogin(user);
   }
 
   void handleLogin(user) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    userProvider.setUser(user!);
+    
     Navigator.of(context).pushReplacement(
-      MaterialPageRoute(builder: (context) => HomePage(account: user))
+      MaterialPageRoute(builder: (context) => HomePage())
     );
   }
 
