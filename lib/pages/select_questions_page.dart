@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:scoreup_app/models/question_models.dart';
 import 'package:scoreup_app/services/get_question_ammount_by_subjects.dart';
+import 'package:scoreup_app/utils/remove_null_util.dart';
 import '../services/get_filtered_questions.dart';
 import '../models/subject_models.dart';
 import '../widgets/dropdown_widget.dart';
@@ -73,13 +74,16 @@ class SelectQuestionsState extends State<SelectQuestions> {
           children: [
             DropdownWidget(
               title: "Matéria",
+              hintText: "Selecione a matéria",
               content: widget.macroSubjects!.getCastedMacroSubjects(),
               value: selectedMacroSubject,
               onChange: handleMacroSubjectSelection,
             ),
             DropdownWidget(
               title: "Assunto",
-              content: selectedMacroSubject != null
+              hintText: "Selecione o assunto",
+              content:
+                selectedMacroSubject != null
                   ? widget.macroSubjects!
                       .getMacroSubjectByName(selectedMacroSubject!)
                       ?.microSubjects
@@ -104,8 +108,8 @@ class SelectQuestionsState extends State<SelectQuestions> {
                     : Future.value(0),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return CircularProgressIndicator(
-                      color: Colors.blue.shade900,
+                    return const CircularProgressIndicator(
+                      color: Color.fromARGB(255, 41, 224, 175),
                     );
                   } else if (snapshot.hasError) {
                     return Text('Ocorreu um erro: ${snapshot.error}');
@@ -115,6 +119,7 @@ class SelectQuestionsState extends State<SelectQuestions> {
                       children: [
                         DropdownWidget(
                           title: "Quantidade",
+                          hintText: "Selecione a quantidade",
                           content: List.generate(questionAmount!, (index) => (index + 1).toString()),
                           value: selectedQuestionAmount?.toString(),
                           onChange: (String value) {
@@ -145,7 +150,7 @@ class SelectQuestionsState extends State<SelectQuestions> {
                   ));
                 },
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(Colors.blue.shade900),
+                  backgroundColor: MaterialStateProperty.all(const Color.fromARGB(255, 0, 136, 100)),
                 ),
                 child: const Text(
                   'Selecionar',

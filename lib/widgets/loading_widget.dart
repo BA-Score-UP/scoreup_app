@@ -24,8 +24,8 @@ class LoadingWidget extends StatelessWidget {
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               // Exibe o widget de loading enquanto busca os dados
-              return CircularProgressIndicator(
-                color: Colors.blue.shade900,
+              return const CircularProgressIndicator(
+                color: Color.fromARGB(255, 41, 224, 175),
               );
             } else if (snapshot.hasError) {
               // Trata erros, se houver

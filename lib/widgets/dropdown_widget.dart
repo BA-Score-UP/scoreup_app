@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class DropdownWidget extends StatefulWidget {
   final String title;
+  final String hintText;
   final List<String> content;
   final Function(String)? onChange;
   final bool isEnabled;
@@ -10,6 +11,7 @@ class DropdownWidget extends StatefulWidget {
   const DropdownWidget({
     super.key,
     required this.title,
+    required this.hintText,
     required this.content,
     this.onChange,
     this.isEnabled = true,
@@ -39,8 +41,8 @@ class DropdownWidgetState extends State<DropdownWidget> {
         icon: const Icon(Icons.keyboard_arrow_down),
         value: dropdownValueIndex == null ? null : widget.content[dropdownValueIndex!],
         hint: Text(
-          widget.value ?? 'Selecione',
-          style: TextStyle(color: Colors.black),
+          widget.value ?? widget.hintText,
+          style: const TextStyle(color: Color.fromARGB(255, 231, 231, 231)),
         ),
         items: widget.content.map((String item) {
           return DropdownMenuItem(

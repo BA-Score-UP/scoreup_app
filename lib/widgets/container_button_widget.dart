@@ -22,8 +22,8 @@ class _ContainerButtonState extends State<ContainerButton> {
       height: 120,
       child: ElevatedButton(
         onPressed: () => {widget.onPressed?.call()},
-        child: Text(widget.title, 
-        style: const TextStyle(fontSize: 20)
+        child: Text(widget.title,
+        style: const TextStyle(fontSize: 20),
         ),
       ),
     );

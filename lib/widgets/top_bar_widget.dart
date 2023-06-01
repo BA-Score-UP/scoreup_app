@@ -11,8 +11,8 @@ class TopBar extends StatefulWidget implements PreferredSizeWidget {
   const TopBar({
     super.key,
     this.mainContent = const [],
-    this.backgroundColor = Colors.white,
-    this.iconColor = Colors.black,
+    this.backgroundColor = const Color.fromARGB(255, 50, 50, 50),
+    this.iconColor = const Color.fromARGB(255, 41, 224, 175),
     this.padding = 8.0,
     this.gap = 16.0,
     this.isMenuShown = true,
@@ -30,6 +30,14 @@ class TopBarState extends State<TopBar> {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: widget.backgroundColor,
+      titleTextStyle: const TextStyle(
+        color: Colors.white,
+        fontSize: 20,
+        fontWeight: FontWeight.w500
+      ),
+      iconTheme: const IconThemeData(
+        color: Color.fromARGB(255, 41, 224, 175)
+      ),
       title: Padding(
         padding: EdgeInsets.all(widget.padding),
         child: Row(

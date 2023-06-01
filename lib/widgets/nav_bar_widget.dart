@@ -14,7 +14,15 @@ class _NavState extends State<Nav> {
   Widget build(BuildContext context) {
     return BottomNavigationBar(
       currentIndex: 1,
-      selectedItemColor: Colors.black,
+      selectedItemColor: const Color.fromARGB(255, 41, 224, 175),
+      selectedLabelStyle: const TextStyle(
+        fontWeight: FontWeight.w500,
+        fontSize: 16
+      ),
+      unselectedItemColor: Colors.white,
+      unselectedLabelStyle: TextStyle(
+        fontSize: 14
+      ),
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.article),
