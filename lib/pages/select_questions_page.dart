@@ -6,7 +6,7 @@ import 'package:scoreup_app/utils/remove_null_util.dart';
 import '../services/get_filtered_questions.dart';
 import '../models/subject_models.dart';
 import '../widgets/dropdown_widget.dart';
-import '../pages/question_page.dart';
+import 'exam_page.dart';
 
 class SelectQuestions extends StatefulWidget {
   final SubjectListModel? macroSubjects;
