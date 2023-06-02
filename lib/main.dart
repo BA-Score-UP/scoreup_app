@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:scoreup_app/pages/stats_page.dart';
 import './pages/home_page.dart';
 import './pages/select_questions_page.dart';
 
@@ -24,6 +25,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/':(context) => const HomePage(),
         '/select_questions':(context) => const SelectQuestions(macroSubjects: null),
+        '/stats':(context) => const StatsPage()
       },
       debugShowCheckedModeBanner: false,
     );
