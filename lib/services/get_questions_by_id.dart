@@ -2,16 +2,14 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/question_models.dart';
 
-Future<QuestionListModel?> getQuestions(String key, String macroSubject, String microSubject, int quantity) async {
+Future<QuestionListModel?> getQuestionsByIds(String key, List<String> ids) async {
   Map<String, dynamic> dictBody = {
-    'macro_subject': macroSubject,
-    if (microSubject.isNotEmpty) 'micro_subject': microSubject,
-    "quantity": quantity
+    'questions_ids': ids
   };
   String castedBody = jsonEncode(dictBody);
   
   var response = await http.post(
-    Uri.parse('https://scoreup-api.onrender.com/question/get_filtered'),
+    Uri.parse('https://scoreup-api.onrender.com/question/get_questions_by_id'),
     headers: {
       'Content-Type': 'application/json',
       'Api-Key': key

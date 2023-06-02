@@ -40,7 +40,7 @@ class DropdownWidgetState extends State<DropdownWidget> {
         value: dropdownValueIndex == null ? null : widget.content[dropdownValueIndex!],
         hint: Text(
           widget.value ?? 'Selecione',
-          style: TextStyle(color: Colors.black),
+          style: const TextStyle(color: Colors.black),
         ),
         items: widget.content.map((String item) {
           return DropdownMenuItem(

@@ -1,10 +1,10 @@
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
 import './pages/login_page.dart';
-import './pages/home_page.dart';
+import 'user_provider.dart';
 
-Future main() async{
+Future<void> main() async {
   await dotenv.load();
   runApp(const MyApp());
 }
@@ -14,16 +14,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.grey
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: MaterialApp(
+        theme: ThemeData(primarySwatch: Colors.grey),
+        initialRoute: "/login",
+        routes: {
+          '/login': (context) => const LoginPage(),
+        },
+        debugShowCheckedModeBanner: false,
       ),
-      initialRoute: Platform.isAndroid? "/login" : "/",
-      routes: {
-        '/login':(context) => const LoginPage(),
-        '/':(context) => const HomePage(account: null,)
-      },
-      debugShowCheckedModeBanner: false,
     );
   }
 }

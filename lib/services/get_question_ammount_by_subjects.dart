@@ -2,9 +2,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 
 Future<int> getQuestionAmmountBySubjects(String key, String macroSubject, String microSubject) async {
-  Map<String, String> dictBody = {
+  Map<String, dynamic> dictBody = {
     'macro_subject': macroSubject,
-    if (microSubject.isNotEmpty) 'micro_subject': microSubject
+    if (microSubject.isNotEmpty) 'micro_subject': microSubject,
   };
   String castedBody = jsonEncode(dictBody);
   

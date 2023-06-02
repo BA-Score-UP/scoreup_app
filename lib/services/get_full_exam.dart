@@ -2,10 +2,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import '../models/question_models.dart';
 
-Future<QuestionListModel?> getQuestions(String key, String macroSubject, String microSubject, int quantity) async {
+Future<QuestionListModel?> getFullExam(String key, String year, int quantity) async {
   Map<String, dynamic> dictBody = {
-    'macro_subject': macroSubject,
-    if (microSubject.isNotEmpty) 'micro_subject': microSubject,
+    'year': year,
     "quantity": quantity
   };
   String castedBody = jsonEncode(dictBody);

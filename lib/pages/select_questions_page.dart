@@ -9,11 +9,13 @@ import '../services/get_filtered_questions.dart';
 
 class SelectQuestions extends StatefulWidget {
   final SubjectListModel? macroSubjects;
+  final user;
 
   const SelectQuestions({
-    Key? key,
+    super.key,
     required this.macroSubjects,
-  }) : super(key: key);
+    required this.user
+  });
 
   @override
   SelectQuestionsState createState() => SelectQuestionsState();
@@ -141,7 +143,7 @@ class SelectQuestionsState extends State<SelectQuestions> {
                     selectedQuestionAmount!,
                   );
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => ExamPage(questionList: questions!,)
+                    builder: (context) => ExamPage(questionList: questions!)
                   ));
                 },
                 style: ButtonStyle(
