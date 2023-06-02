@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import '../pages/home_page.dart';
+import '../pages/provas_page.dart';
+import '../pages/estatisticas_page.dart';
 
 class Nav extends StatefulWidget {
+  final int index;
+
   const Nav({
     Key? key,
+    required this.index,
   }) : super(key: key);
 
   @override
@@ -10,26 +16,33 @@ class Nav extends StatefulWidget {
 }
 
 class _NavState extends State<Nav> {
-  int _currentIndex = 1; // Keep track of the selected index
+  late int _currentIndex;
+
+  @override
+  void initState() {
+    super.initState();
+    _currentIndex = widget.index;
+  }
 
   void _onItemTapped(int index) {
-    setState(() {
-      _currentIndex = index; // Update the selected index
-    });
-
-    // Perform navigation based on the selected index
     switch (index) {
       case 0:
-        // Navigate to Provas page
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => ProvasPage()));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const ProvasPage()),
+        );
         break;
       case 1:
-        // Navigate to Home page
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => HomePage()));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const HomePage()),
+        );
         break;
       case 2:
-        // Navigate to Estatísticas page
-        // Navigator.push(context, MaterialPageRoute(builder: (context) => EstatisticasPage()));
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (context) => const EstatisticasPage()),
+        );
         break;
     }
   }
@@ -39,7 +52,7 @@ class _NavState extends State<Nav> {
     return BottomNavigationBar(
       currentIndex: _currentIndex,
       selectedItemColor: Colors.black,
-      onTap: _onItemTapped, // Set the onTap callback
+      onTap: _onItemTapped,
       items: const [
         BottomNavigationBarItem(
           icon: Icon(Icons.article),

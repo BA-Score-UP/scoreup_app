@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:provider/provider.dart';
+import '../user_provider.dart';
 import '../pages/exam_page.dart';
 import '../pages/select_questions_page.dart';
 import '../widgets/nav_bar_widget.dart';
@@ -13,8 +15,6 @@ import '../services/get_questions_by_id.dart';
 import '../services/get_subjects.dart';
 import '../services/get_answer.dart';
 import '../services/get_answer_amount.dart';
-import 'package:provider/provider.dart';
-import '../user_provider.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -89,7 +89,7 @@ class HomePageState extends State<HomePage> {
 
   void handleRevision(QuestionListModel? questions) {
     Navigator.of(context).pushReplacement(MaterialPageRoute(
-      builder: (context) => ExamPage(questionList: questions!, user: user),
+      builder: (context) => ExamPage(questionList: questions!),
     ));
   }
 
@@ -174,7 +174,7 @@ class HomePageState extends State<HomePage> {
                 );
               },
             ),
-      bottomNavigationBar: const Nav(),
+      bottomNavigationBar: const Nav(index: 1,),
     );
   }
 }

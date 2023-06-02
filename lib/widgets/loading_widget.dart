@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
 
 class LoadingWidget extends StatelessWidget {
@@ -36,8 +35,7 @@ class LoadingWidget extends StatelessWidget {
             }
           },
         ),
-      ),
-      bottomNavigationBar: secondary? const Nav() : null,
+      )
     );
   }
 }

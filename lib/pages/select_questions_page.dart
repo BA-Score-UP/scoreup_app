@@ -143,7 +143,7 @@ class SelectQuestionsState extends State<SelectQuestions> {
                     selectedQuestionAmount!,
                   );
                   Navigator.of(context).pushReplacement(MaterialPageRoute(
-                    builder: (context) => ExamPage(questionList: questions!, user: widget.user,)
+                    builder: (context) => ExamPage(questionList: questions!)
                   ));
                 },
                 style: ButtonStyle(

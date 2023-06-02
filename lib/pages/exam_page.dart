@@ -1,21 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:provider/provider.dart';
+import '../user_provider.dart';
 import './home_page.dart';
 import '../services/set_answer.dart';
-import '../widgets/nav_bar_widget.dart';
 import '../widgets/top_bar_widget.dart';
 import '../widgets/bottom_modal_widget.dart';
 import '../models/question_models.dart';
 
 class ExamPage extends StatefulWidget {
   final QuestionListModel questionList;
-  final GoogleSignInAccount user;
 
   const ExamPage({
     super.key,
     required this.questionList,
-    required this.user
   });
 
   @override
@@ -23,12 +22,14 @@ class ExamPage extends StatefulWidget {
 }
 
 class _ExamPageState extends State<ExamPage> {
+  late GoogleSignInAccount user;
   late List<QuestionModel> questions;
   int currentQuestionIndex = 0;
 
   @override
   void initState() {
     super.initState();
+    user = Provider.of<UserProvider>(context, listen: false).user;
     questions = widget.questionList.questions;
   }
 
@@ -62,7 +63,6 @@ class _ExamPageState extends State<ExamPage> {
                 child: Column(
                   children: [
                     Text("Você $status", style: const TextStyle(fontWeight: FontWeight.w700)),
-                    Text(currentQuestion.explanation),
                     status != "Acertou!" ? Text(
                       "Resposta: ${
                         currentQuestion.answer == 0 ? "A":
@@ -73,6 +73,7 @@ class _ExamPageState extends State<ExamPage> {
                         ""
                       }"
                     ):const Text(""),
+                    Text("Explicação: ${currentQuestion.explanation}"),
                     ElevatedButton(
                       child: const Text('OK'),
                       onPressed: () {
@@ -114,14 +115,14 @@ class _ExamPageState extends State<ExamPage> {
 
       setAnswer(
         apiKey,
-        widget.user.id,
+        user.id,
         currentQuestion.id,
         status
       );
       
       questions.removeWhere((question) => question.id == currentQuestion.id);
 
-      openModal(status == "correct"? "Acertou!" : "Errou");
+      openModal(status == "correct"? "Acertou !" : "Errou");
      
     }
 
@@ -159,6 +160,10 @@ class _ExamPageState extends State<ExamPage> {
                   ),
                 ],
               ),
+            ),
+            Text(
+              "${currentQuestion.statement.command}:",
+              style: const TextStyle(fontWeight: FontWeight.w600)
             ),
             Expanded (
               child: SingleChildScrollView(
@@ -209,8 +214,7 @@ class _ExamPageState extends State<ExamPage> {
             )
           ],
         ),
-      ),
-      bottomNavigationBar: const Nav(),
+      )
     );
   }
 }
