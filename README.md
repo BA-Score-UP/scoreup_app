@@ -31,9 +31,10 @@ pubspec.yaml
 ## Running
 
 ⚠️ Don't clone in a folder with blank spaces ⚠️
-⚠️ Make sure to have an valid API-KEY in the .env file ⚠️
+⚠️ Make sure to have an valid API-KEY in the .env file and android emulator installed⚠️
+
 
 1. Clone the repository: ```git clone https://github.com/BA-Score-UP/scoreup-app.git```
 2. Install flutter dependencies: ```flutter pub get```
-3. Install windows debug dependencies: ```flutter create --platforms=windows .```
-4. Run the app in development mode: ```flutter run -d windows```
+3. Install windows debug dependencies: ```flutter create --platforms=android .```
+4. Run the app in development mode: ```flutter run -d emulator-5554```
