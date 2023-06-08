@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import '../pages/exam_page.dart';
 import '../widgets/dropdown_widget.dart';
+import '../widgets/nav_bar_widget.dart';
+import '../widgets/top_bar_widget.dart';
 import '../models/question_models.dart';
 import '../models/subject_models.dart';
 import '../services/get_question_ammount_by_subjects.dart';
@@ -66,6 +68,7 @@ class SelectQuestionsState extends State<SelectQuestions> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const TopBar(),
       body: Container(
         padding: const EdgeInsets.all(32),
         alignment: Alignment.center,
@@ -158,6 +161,7 @@ class SelectQuestionsState extends State<SelectQuestions> {
           ],
         ),
       ),
+      bottomNavigationBar: const Nav(index: 1,),
     );
   }
 }
