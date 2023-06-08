@@ -88,7 +88,7 @@ class HomePageState extends State<HomePage> {
   }
 
   void handleRevision(QuestionListModel? questions) {
-    Navigator.of(context).pushReplacement(MaterialPageRoute(
+    Navigator.of(context).push(MaterialPageRoute(
       builder: (context) => ExamPage(questionList: questions!),
     ));
   }

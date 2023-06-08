@@ -38,9 +38,9 @@ class QuestionModel {
     return QuestionModel(
       id: json['_id'],
       answer: json['answer'],
-      explanation: json['explanation'],
+      explanation: json['explanation']?? '',
       macroSubject: json['macro_subject'],
-      microSubject: json['micro_subject'],
+      microSubject: json['micro_subject']?? '',
       options: List<String>.from(json['options']),
       statement: StatementModel.fromJson(json['statement']),
       year: json['year'],
